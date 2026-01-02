@@ -175,4 +175,5 @@ function abrirPlanilha() {
     // Link direto para a sua planilha
     const linkPlanilha = "https://docs.google.com/spreadsheets/d/1WY8NDzRrW2HB_dtLHB8dA7s4j1Cqp7YkQNupULzkr_g/edit";
     window.open(linkPlanilha, '_blank');
+
 }
