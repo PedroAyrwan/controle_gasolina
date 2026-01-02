@@ -1,1 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Viagens</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0284c7"> <link rel="apple-touch-icon" href="icon.png"> </head>
+<body>
 
+    <div class="container">
+        <header class="header-container">
+            <h1>🚗 Controle de Viagens</h1>
+        </header>
+
+        <div class="card config-card">
+            <div class="config-wrapper">
+                <span class="label-destaque">⛽ Preço do Combustível Hoje:</span>
+                <div class="input-wrapper">
+                    <span>R$</span>
+                    <input type="number" id="precoCombustivel" value="5.99" step="0.01">
+                </div>
+                <small>(Altere aqui para atualizar o cálculo da próxima viagem)</small>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Nova Viagem</h3>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="dataViagem">
+                </div>
+                <div class="form-group">
+                    <label>Cliente / Empresa</label>
+                    <input type="text" id="cliente" placeholder="Ex: Mercado Silva">
+                </div>
+                <div class="form-group">
+                    <label>Cidade / Destino</label>
+                    <input type="text" id="destino" placeholder="Ex: Centro">
+                </div>
+            </div>
+
+            <div class="form-grid" style="margin-top: 15px;">
+                <div class="form-group">
+                    <label>Veículo</label>
+                    <select id="veiculo">
+                        <option value="Onix 1.0" data-kml="13.0">Onix 1.0 (13 km/l)</option>
+                        <option value="HB20 1.0" data-kml="12.5">HB20 1.0 (12.5 km/l)</option>
+                        <option value="Gol 1.6" data-kml="11.0">Gol 1.6 (11 km/l)</option>
+                        <option value="Moto 125cc" data-kml="35.0">Moto 125cc (35 km/l)</option>
+                        <option value="SUV" data-kml="9.0">SUV (9 km/l)</option>
+                        <option value="Pickup" data-kml="8.0">Pickup (8 km/l)</option>
+                        <option value="Padrão" data-kml="12.0" selected>Padrão (12 km/l)</option>
+                        <option value="Outro" data-kml="0">Outro (Definir manual)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group hidden" id="divConsumoManual">
+                    <label>Consumo Manual (km/l)</label>
+                    <input type="number" id="consumoManual" value="10.0" step="0.1">
+                </div>
+
+                <div class="form-group">
+                    <label>Distância Ida (KM)</label>
+                    <input type="number" id="distancia" value="0" step="0.1" min="0">
+                </div>
+
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="idaVolta" checked>
+                    <label for="idaVolta">Considerar Ida e Volta</label>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Observações</label>
+                <textarea id="observacoes" rows="2" placeholder="Opcional..."></textarea>
+            </div>
+
+            <div class="results-panel">
+                <div class="result-item">
+                    <h4 id="prevKm">0.0</h4>
+                    <small>KM Total</small>
+                </div>
+                <div class="result-item">
+                    <h4 id="prevLitros">0.0</h4>
+                    <small>Litros Est.</small>
+                </div>
+                <div class="result-item">
+                    <h4 id="prevCusto">R$ 0,00</h4>
+                    <small>Custo Est.</small>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="salvarViagem()">💾 Registrar Viagem</button>
+        </div>
+
+        <div class="card">
+            <div class="header-table">
+                <h3>Histórico de Viagens</h3>
+                <button class="btn-outline" onclick="abrirPlanilha()">📊 Visualizar Planilha</button>
+            </div>
+            
+            <div class="table-responsive">
+                <table id="tabelaDados">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Destino</th>
+                            <th>Veículo</th>
+                            <th>KM Total</th>
+                            <th>Custo</th>
+                            <th style="text-align: center;">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+            
+            <div class="total-row">
+                Total Gasto no Período: <strong id="totalGeral">R$ 0,00</strong>
+            </div>
+        </div>
+        
+        <div class="footer-note">
+            Os dados ficam salvos neste navegador e na sua Planilha Google.
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('App pronto para instalar!', reg))
+            .catch(err => console.log('Erro ao registrar app:', err));
+        });
+      }
+    </script>
+
+</body>
+</html>
